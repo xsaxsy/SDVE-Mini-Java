@@ -6,5 +6,14 @@ namespace SDVE
         {
             InitializeComponent();
         }
+
+        private void btnIniciarSesion_Click(object sender, EventArgs e)
+        {
+        }
+        private void FrmLogin_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Application.Exit();
+        }
+
     }
 }
