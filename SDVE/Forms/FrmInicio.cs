@@ -12,9 +12,15 @@ namespace SDVE.Forms
 {
     public partial class FrmInicio : Form
     {
+        private string matriculaAlumno;
         public FrmInicio()
         {
             InitializeComponent();
+        }
+        public FrmInicio (string matricula)
+        {
+            InitializeComponent();
+            matriculaAlumno = matricula;
         }
         private void btnContinuar_Click(object sender, EventArgs e)
         {
@@ -38,7 +44,7 @@ namespace SDVE.Forms
             if (chkConsejoRepresentantes.Checked)
                 eleccionesSeleccionadas.Add(3);
 
-            FrmVotacion frmVotacion = new FrmVotacion(eleccionesSeleccionadas);
+            FrmVotacion frmVotacion = new FrmVotacion(eleccionesSeleccionadas, matriculaAlumno);
             frmVotacion.Show();
 
             this.Hide();

@@ -17,11 +17,17 @@ namespace SDVE.Forms
     {
         private List<int> eleccionesSeleccionadas;
         private List<Voto> votosSeleccionados = new List<Voto>();
-        public FrmVotacion(List<int> eleccionesSeleccionadas)
+        private string matriculaAlumno;
+        public FrmVotacion()
+        {
+            InitializeComponent();
+        }
+        public FrmVotacion(List<int> eleccionesSeleccionadas, string matriculaAlumno)
         {
             InitializeComponent();
 
             this.eleccionesSeleccionadas = eleccionesSeleccionadas;
+            this.matriculaAlumno = matriculaAlumno;
 
             CargarPapeleta();
         }
@@ -97,6 +103,36 @@ namespace SDVE.Forms
 
         private void btnContinuar_Click(object sender, EventArgs e)
         {
+            votosSeleccionados.Clear();
+
+            // Primero verificamos si el alumno ya votó
+            // en alguna de las convocatorias seleccionadas.
+            foreach (int convocatoriaId in eleccionesSeleccionadas)
+            {
+                bool yaVoto = DatosService.Votos.Any(v =>
+                    v.MatriculaAlumno == matriculaAlumno &&
+                    v.ConvocatoriaId == convocatoriaId
+                );
+
+                if (yaVoto)
+                {
+                    Convocatoria? convocatoria = DatosService.Convocatorias
+                        .FirstOrDefault(c => c.Id == convocatoriaId);
+
+                    MessageBox.Show(
+                        "La matrícula " + matriculaAlumno +
+                        " ya emitió un voto en:\n\n" +
+                        convocatoria?.Nombre,
+                        "Voto ya registrado",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning
+                    );
+
+                    return;
+                }
+            }
+
+            // Después procesamos cada elección de la papeleta.
             foreach (Control control in pnlPapeleta.Controls)
             {
                 if (control is GroupBox grupo)
@@ -120,52 +156,70 @@ namespace SDVE.Forms
                         }
                     }
 
-                    bool tieneCandidatoRegistrado = candidatoSeleccionado != null;
-                    bool tieneCandidatoNoRegistrado = candidatoNoRegistrado != null && !string.IsNullOrWhiteSpace(candidatoNoRegistrado.Text);
+                    bool tieneCandidatoRegistrado =
+                        candidatoSeleccionado != null;
 
-                    //Hay que hacer una acción por si ninguna opción fue seleccionada.
+                    bool tieneCandidatoNoRegistrado =
+                        candidatoNoRegistrado != null &&
+                        !string.IsNullOrWhiteSpace(candidatoNoRegistrado.Text);
 
-                    if (!tieneCandidatoRegistrado && !tieneCandidatoNoRegistrado)
+                    // Ninguna opción seleccionada.
+                    if (!tieneCandidatoRegistrado &&
+                        !tieneCandidatoNoRegistrado)
                     {
-                        MessageBox.Show("Debes de seleccionar un candidato o escribir un candidato no registrado en: \n\n" +
+                        MessageBox.Show(
+                            "Debes de seleccionar un candidato o escribir un candidato no registrado en:\n\n" +
                             grupo.Text,
                             "Voto incompleto",
                             MessageBoxButtons.OK,
-                            MessageBoxIcon.Warning);
+                            MessageBoxIcon.Warning
+                        );
+
                         return;
                     }
 
-                    //Por si ambas opciones fueron seleccionadas porque solo se puede elegir una.
-                    if (tieneCandidatoRegistrado && tieneCandidatoNoRegistrado)
+                    // Ambas opciones seleccionadas.
+                    if (tieneCandidatoRegistrado &&
+                        tieneCandidatoNoRegistrado)
                     {
-                        MessageBox.Show("No puedes seleccionar un candidato registrado y escribir un candidato no registrado al mismo tiempo: \n\n" +
+                        MessageBox.Show(
+                            "No puedes seleccionar un candidato registrado y escribir un candidato no registrado al mismo tiempo:\n\n" +
                             grupo.Text,
                             "Selección no válida",
                             MessageBoxButtons.OK,
                             MessageBoxIcon.Warning
-                            );
+                        );
+
                         return;
                     }
 
+                    // Creamos el voto.
                     Voto voto = new Voto
                     {
+                        MatriculaAlumno = matriculaAlumno,
                         ConvocatoriaId = convocatoriaId,
                         FechaHora = DateTime.Now
                     };
 
                     if (tieneCandidatoRegistrado)
                     {
-                        voto.CandidatoId = (int)candidatoSeleccionado!.Tag;
+                        voto.CandidatoId =
+                            (int)candidatoSeleccionado!.Tag;
                     }
                     else
                     {
-                        voto.CandidatoNoRegistrado = candidatoNoRegistrado!.Text.Trim();
+                        voto.CandidatoNoRegistrado =
+                            candidatoNoRegistrado!.Text.Trim();
                     }
 
                     votosSeleccionados.Add(voto);
                 }
             }
-            FrmConfirmacion frmConfirmacion = new FrmConfirmacion(votosSeleccionados);
+
+            // Pasamos los votos a la pantalla de confirmación.
+            FrmConfirmacion frmConfirmacion =
+                new FrmConfirmacion(votosSeleccionados);
+
             frmConfirmacion.Show();
 
             this.Hide();

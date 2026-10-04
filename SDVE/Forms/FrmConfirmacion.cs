@@ -92,14 +92,17 @@ namespace SDVE.Forms
             {
                 DatosService.Votos.Add(voto);
             }
+            
 
-            MessageBox.Show("Tu voto ha sido registrado correctamente.",
-                "Votación completada",
+            MessageBox.Show("Tu voto ha sido registrado correctamente. ",
+                "Votación completa.",
                 MessageBoxButtons.OK,
-                MessageBoxIcon.Information
-                );
+                MessageBoxIcon.Information);
 
-            Application.Exit();
+            FrmLogin frmLogin = new FrmLogin();
+
+            frmLogin.Show();
+            this.Hide();
         }
     }
 }
