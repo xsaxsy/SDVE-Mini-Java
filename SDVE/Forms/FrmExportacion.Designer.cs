@@ -153,6 +153,7 @@
             btnRegrear.TabIndex = 10;
             btnRegrear.Text = "Regresar";
             btnRegrear.UseVisualStyleBackColor = true;
+            btnRegrear.Click += btnRegrear_Click;
             // 
             // FrmExportacion
             // 

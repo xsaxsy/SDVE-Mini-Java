@@ -295,7 +295,7 @@ namespace SDVE.Forms
                 );
             }
 
-           //Exportación en forato JSON
+            //Exportación en forato JSON
 
             else if (formato == "JSON")
             {
@@ -405,6 +405,11 @@ namespace SDVE.Forms
                     MessageBoxIcon.Information
                 );
             }
+        }
+
+        private void btnRegrear_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }
