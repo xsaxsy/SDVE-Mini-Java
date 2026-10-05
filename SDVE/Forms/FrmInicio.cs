@@ -7,6 +7,9 @@ using System.Text;
 using System.Windows.Forms;
 using System.Collections.Generic;
 using SDVE.Forms;
+using System.Linq;
+using SDVE.Services;
+using SDVE.Models;
 
 namespace SDVE.Forms
 {
@@ -21,13 +24,15 @@ namespace SDVE.Forms
         {
             InitializeComponent();
             matriculaAlumno = matricula;
+            CargarConvocatoriasActivas();
         }
         private void btnContinuar_Click(object sender, EventArgs e)
         {
             if (!chkSociedadAlumnos.Checked && !chkConsejoUniversitario.Checked && !chkConsejoRepresentantes.Checked)
             {
                 MessageBox.Show(null,
-                    "Debes selecccionar al menos una elección. Selección requerida."
+                    "Debes selecccionar al menos una elección. Selección requerida.",
+                    "Selección requerida"
                     , MessageBoxButtons.OK, 
                     MessageBoxIcon.Warning);
                 return;
@@ -48,7 +53,47 @@ namespace SDVE.Forms
             frmVotacion.Show();
 
             this.Hide();
+
+            foreach (int convocatoriaId in eleccionesSeleccionadas)
+            {
+                bool estaActiva = DatosService.Convocatorias.Any(c => c.Id == convocatoriaId && c.Activa);
+
+                if (!estaActiva)
+                {
+                    MessageBox.Show(
+                        "La convocatoria seleccionada ya no encuentra activa.",
+                        "Convocatoria no disponible",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+
+                    return;
+                }
+            }
             
+        }
+
+        private void CargarConvocatoriasActivas()
+        {
+            Convocatoria? sociedadAlumnos =
+        DatosService.Convocatorias
+            .FirstOrDefault(c => c.Id == 1);
+
+            Convocatoria? consejoUniversitario =
+                DatosService.Convocatorias
+                    .FirstOrDefault(c => c.Id == 2);
+
+            Convocatoria? consejoRepresentantes =
+                DatosService.Convocatorias
+                    .FirstOrDefault(c => c.Id == 3);
+
+            chkSociedadAlumnos.Visible =
+                sociedadAlumnos != null && sociedadAlumnos.Activa;
+
+            chkConsejoUniversitario.Visible =
+                consejoUniversitario != null && consejoUniversitario.Activa;
+
+            chkConsejoRepresentantes.Visible =
+                consejoRepresentantes != null && consejoRepresentantes.Activa;
         }
     }
 }

@@ -9,6 +9,9 @@ namespace SDVE.Models
         public int Id { get; set; }
 
         public string MatriculaAlumno { get; set; } = string.Empty;
+        public string Grupo { get; set; } = string.Empty;
+        public string Carrera { get; set; } = string.Empty;
+        public string CentroUniversitario { get; set; } = string.Empty;
 
         public int ConvocatoriaId { get; set; }
 

@@ -93,6 +93,68 @@ namespace SDVE.Services
             }
         };
 
+        public static List<Alumno> Alumnos { get; } = new List<Alumno>
+        {
+            new Alumno
+            {
+                Matricula = "0001",
+                Nombre = "Jose Sebastian Valadez Silva",
+                Grupo = "5A",
+                Carrera = "Infortmatica y Tecnologías Computacionales",
+                CentroUniversitario = "Centro de Ciencias Básicas"
+            },
+             new Alumno
+            {
+                Matricula = "0002",
+                Nombre = "Valeria Alejandra Centeno Solorzano",
+                Grupo = "5A",
+                Carrera = "Infortmatica y Tecnologías Computacionales",
+                CentroUniversitario = "Centro de Ciencias Básicas"
+            },
+              new Alumno
+            {
+                Matricula = "0003",
+                Nombre = "Analy Iridian Sánchez Ruiz",
+                Grupo = "5A",
+                Carrera = "Infortmatica y Tecnologías Computacionales",
+                CentroUniversitario = "Centro de Ciencias Básicas"
+            },
+               new Alumno
+            {
+                Matricula = "0004",
+                Nombre = "Miguel Angel Aguilar Granados",
+                Grupo = "5A",
+                Carrera = "Infortmatica y Tecnologías Computacionales",
+                CentroUniversitario = "Centro de Ciencias Básicas"
+            },
+                new Alumno
+            {
+                Matricula = "0005",
+                Nombre = "Daana Paola Diaz Loza",
+                Grupo = "5A",
+                Carrera = "Infortmatica y Tecnologías Computacionales",
+                CentroUniversitario = "Centro de Ciencias Básicas"
+            },
+                 new Alumno
+            {
+                Matricula = "0006",
+                Nombre = "Karla Andrea Llamas Valle",
+                Grupo = "5A",
+                Carrera = "Infortmatica y Tecnologías Computacionales",
+                CentroUniversitario = "Centro de Ciencias Básicas"
+            },
+            new Alumno
+            {
+                Matricula = "0007",
+                Nombre = "Geraldyn Irene Campos Aguirre",
+                Grupo = "5B",
+                Carrera = "Diseño de Interiores",
+                CentroUniversitario = "Centro de Ciencias del Diseño y la Construcción"
+            },
+
+
+        };
+            
         public static List<Voto> Votos { get; } = new List<Voto>();
     }
 }

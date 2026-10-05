@@ -38,18 +38,20 @@
             // 
             // label1
             // 
-            label1.AutoSize = true;
+            label1.BackColor = Color.FromArgb(51, 55, 113);
             label1.Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.Location = new Point(314, 9);
+            label1.ForeColor = Color.White;
+            label1.Location = new Point(-1, 0);
             label1.Name = "label1";
-            label1.Size = new Size(343, 41);
+            label1.Size = new Size(983, 73);
             label1.TabIndex = 0;
             label1.Text = "Selección de Elecciones";
+            label1.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(304, 73);
+            label2.Location = new Point(300, 99);
             label2.Name = "label2";
             label2.Size = new Size(363, 20);
             label2.TabIndex = 1;
@@ -58,7 +60,7 @@
             // chkSociedadAlumnos
             // 
             chkSociedadAlumnos.AutoSize = true;
-            chkSociedadAlumnos.Location = new Point(401, 150);
+            chkSociedadAlumnos.Location = new Point(394, 174);
             chkSociedadAlumnos.Name = "chkSociedadAlumnos";
             chkSociedadAlumnos.Size = new Size(176, 24);
             chkSociedadAlumnos.TabIndex = 3;
@@ -68,7 +70,7 @@
             // chkConsejoUniversitario
             // 
             chkConsejoUniversitario.AutoSize = true;
-            chkConsejoUniversitario.Location = new Point(401, 212);
+            chkConsejoUniversitario.Location = new Point(394, 218);
             chkConsejoUniversitario.Name = "chkConsejoUniversitario";
             chkConsejoUniversitario.Size = new Size(171, 24);
             chkConsejoUniversitario.TabIndex = 4;
@@ -78,7 +80,7 @@
             // chkConsejoRepresentantes
             // 
             chkConsejoRepresentantes.AutoSize = true;
-            chkConsejoRepresentantes.Location = new Point(401, 276);
+            chkConsejoRepresentantes.Location = new Point(394, 260);
             chkConsejoRepresentantes.Name = "chkConsejoRepresentantes";
             chkConsejoRepresentantes.Size = new Size(210, 24);
             chkConsejoRepresentantes.TabIndex = 5;
@@ -87,19 +89,19 @@
             // 
             // btnContinuar
             // 
-            btnContinuar.Location = new Point(432, 355);
+            btnContinuar.Location = new Point(429, 318);
             btnContinuar.Name = "btnContinuar";
             btnContinuar.Size = new Size(108, 29);
             btnContinuar.TabIndex = 3;
             btnContinuar.Text = "CONTINUAR";
             btnContinuar.UseVisualStyleBackColor = true;
-            btnContinuar.Click += this.btnContinuar_Click;
+            btnContinuar.Click += btnContinuar_Click;
             // 
             // FrmInicio
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(982, 603);
+            ClientSize = new Size(982, 425);
             Controls.Add(chkSociedadAlumnos);
             Controls.Add(chkConsejoRepresentantes);
             Controls.Add(chkConsejoUniversitario);

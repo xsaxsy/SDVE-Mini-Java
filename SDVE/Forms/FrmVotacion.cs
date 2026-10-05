@@ -178,7 +178,7 @@ namespace SDVE.Forms
                         return;
                     }
 
-                    // Ambas opciones seleccionadas.
+                    // Con cambas opciones seleccionadas
                     if (tieneCandidatoRegistrado &&
                         tieneCandidatoNoRegistrado)
                     {
@@ -193,10 +193,27 @@ namespace SDVE.Forms
                         return;
                     }
 
-                    // Creamos el voto.
+                    //Buscar el alumno
+                    Alumno? alumno = DatosService.Alumnos.FirstOrDefault(a => a.Matricula == matriculaAlumno);
+
+                    if (alumno == null)
+                    {
+                        MessageBox.Show(
+                            "No se encontraron los datos del alumno.",
+                            "Error",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Error
+                        );
+
+                        return;
+                    }
+                    // Creamos el voto
                     Voto voto = new Voto
                     {
                         MatriculaAlumno = matriculaAlumno,
+                        Grupo = alumno.Grupo,
+                        Carrera = alumno.Carrera,
+                        CentroUniversitario = alumno.CentroUniversitario,
                         ConvocatoriaId = convocatoriaId,
                         FechaHora = DateTime.Now
                     };

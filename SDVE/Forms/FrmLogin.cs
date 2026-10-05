@@ -1,4 +1,9 @@
 using SDVE.Forms;
+using SDVE.Models;
+using SDVE.Services;
+using System;
+using System.Linq;
+using System.Windows.Forms;
 
 namespace SDVE
 {
@@ -14,14 +19,14 @@ namespace SDVE
             string matricula = txtMatricula.Text.Trim();
             string password = txtPassword.Text;
 
-            if (string.IsNullOrEmpty(matricula))
+            if (string.IsNullOrWhiteSpace(matricula))
             {
                 MessageBox.Show(
-                    "Debes de Ingresar tu matrícula.",
+                    "Debes ingresar tu matrícula.",
                     "Dato requerido",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning
-                    );
+                );
 
                 txtMatricula.Focus();
                 return;
@@ -30,28 +35,52 @@ namespace SDVE
             if (string.IsNullOrWhiteSpace(password))
             {
                 MessageBox.Show(
-                    "Debes de Ingresar tu contraseña.",
+                    "Debes ingresar tu contraseña.",
                     "Dato requerido",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning
-                    );
+                );
+
                 txtPassword.Focus();
                 return;
             }
 
-            if(matricula == "admin" && password == "admin123")
+            //Esta parte solo es temporal para el acceso al administrador
+            if (matricula == "admin" && password == "admin123")
             {
                 FrmPrincipalAdmin frmAdmin = new FrmPrincipalAdmin();
 
                 frmAdmin.Show();
-                this.Hide();
-                return;
 
+                this.Hide();
+
+                return;
             }
 
-            FrmInicio frmInicio = new FrmInicio(matricula);
+            // Buscar al alumno por matrícula
+            Alumno? alumno = DatosService.Alumnos
+                .FirstOrDefault(a => a.Matricula == matricula);
+
+            if (alumno == null)
+            {
+                MessageBox.Show(
+                    "La matrícula ingresada no se encuentra registrada.",
+                    "Matrícula no encontrada",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
+
+                txtMatricula.Focus();
+                return;
+            }
+
+            //Acceso de alumno
+            FrmInicio frmInicio = new FrmInicio(alumno.Matricula);
+
             frmInicio.Show();
+
             this.Hide();
+
         }
         private void FrmLogin_FormClosed(object sender, FormClosedEventArgs e)
         {
