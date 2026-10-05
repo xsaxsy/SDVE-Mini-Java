@@ -13,6 +13,7 @@ namespace SDVE.Forms
         public FrmPrincipalAdmin()
         {
             InitializeComponent();
+            UiTheme.Apply(this);
         }
 
         private void btnCerrarSesion_Click(object sender, EventArgs e)

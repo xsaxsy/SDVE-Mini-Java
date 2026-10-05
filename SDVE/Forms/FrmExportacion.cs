@@ -9,7 +9,6 @@ using System.Linq;
 using SDVE.Models;
 using SDVE.Services;
 using System.IO;
-using System.Text;
 using System.Text.Json;
 using System.Xml.Linq;
 
@@ -20,6 +19,7 @@ namespace SDVE.Forms
         public FrmExportacion()
         {
             InitializeComponent();
+            UiTheme.Apply(this);
         }
 
         private void FrmExportacion_Load(object sender, EventArgs e)

@@ -16,6 +16,7 @@ namespace SDVE.Forms
         public FrmCandidatos()
         {
             InitializeComponent();
+            UiTheme.Apply(this);
             CargarCandidatos();
         }
 

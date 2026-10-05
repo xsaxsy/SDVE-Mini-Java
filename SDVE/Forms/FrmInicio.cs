@@ -19,10 +19,12 @@ namespace SDVE.Forms
         public FrmInicio()
         {
             InitializeComponent();
+            UiTheme.Apply(this);
         }
         public FrmInicio (string matricula)
         {
             InitializeComponent();
+            UiTheme.Apply(this);
             matriculaAlumno = matricula;
             CargarConvocatoriasActivas();
         }

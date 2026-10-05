@@ -21,10 +21,12 @@ namespace SDVE.Forms
         public FrmVotacion()
         {
             InitializeComponent();
+            UiTheme.Apply(this);
         }
         public FrmVotacion(List<int> eleccionesSeleccionadas, string matriculaAlumno)
         {
             InitializeComponent();
+            UiTheme.Apply(this);
 
             this.eleccionesSeleccionadas = eleccionesSeleccionadas;
             this.matriculaAlumno = matriculaAlumno;

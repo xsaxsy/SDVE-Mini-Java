@@ -16,6 +16,7 @@ namespace SDVE.Forms
         public FrmResultados()
         {
             InitializeComponent();
+            UiTheme.Apply(this);
         }
 
         private void FrmResultados_Load(object sender, EventArgs e)

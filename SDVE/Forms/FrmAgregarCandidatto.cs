@@ -17,6 +17,7 @@ namespace SDVE.Forms
         public FrmAgregarCandidatto()
         {
             InitializeComponent();
+            UiTheme.Apply(this);
             CargarConvocatorias();
         }
 

@@ -17,11 +17,13 @@ namespace SDVE.Forms
         public FrmEditarCandidato1()
         {
             InitializeComponent();
+            UiTheme.Apply(this);
         }
 
         public FrmEditarCandidato1(int id)
         {
             InitializeComponent();
+            UiTheme.Apply(this);
             candidatoId = id;
 
             CargarConvocatorias();

@@ -17,6 +17,7 @@ namespace SDVE.Forms
         public FrmConvocatorias()
         {
             InitializeComponent();
+            UiTheme.Apply(this);
             CargarConvocatorias();
         }
 

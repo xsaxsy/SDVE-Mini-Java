@@ -30,12 +30,12 @@
         {
             pnlMenu = new Panel();
             btnCerrarSesion = new Button();
+            lblAdmin = new Label();
+            lblLogo = new Label();
             btnExportacion = new Button();
             btnResultados = new Button();
             btnCandidatos = new Button();
             btnConvocatorias = new Button();
-            lblAdmin = new Label();
-            lblLogo = new Label();
             pnlContenido = new Panel();
             label1 = new Label();
             pnlMenu.SuspendLayout();
@@ -45,10 +45,6 @@
             // pnlMenu
             // 
             pnlMenu.Controls.Add(btnCerrarSesion);
-            pnlMenu.Controls.Add(btnExportacion);
-            pnlMenu.Controls.Add(btnResultados);
-            pnlMenu.Controls.Add(btnCandidatos);
-            pnlMenu.Controls.Add(btnConvocatorias);
             pnlMenu.Controls.Add(lblAdmin);
             pnlMenu.Controls.Add(lblLogo);
             pnlMenu.Dock = DockStyle.Left;
@@ -68,54 +64,6 @@
             btnCerrarSesion.Text = "Cerrar Sesión";
             btnCerrarSesion.UseVisualStyleBackColor = true;
             btnCerrarSesion.Click += btnCerrarSesion_Click;
-            // 
-            // btnExportacion
-            // 
-            btnExportacion.FlatStyle = FlatStyle.Flat;
-            btnExportacion.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnExportacion.Location = new Point(14, 295);
-            btnExportacion.Name = "btnExportacion";
-            btnExportacion.Size = new Size(200, 45);
-            btnExportacion.TabIndex = 5;
-            btnExportacion.Text = "Exportación";
-            btnExportacion.UseVisualStyleBackColor = true;
-            btnExportacion.Click += btnExportacion_Click;
-            // 
-            // btnResultados
-            // 
-            btnResultados.FlatStyle = FlatStyle.Flat;
-            btnResultados.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnResultados.Location = new Point(14, 232);
-            btnResultados.Name = "btnResultados";
-            btnResultados.Size = new Size(200, 45);
-            btnResultados.TabIndex = 4;
-            btnResultados.Text = "Resultados";
-            btnResultados.UseVisualStyleBackColor = true;
-            btnResultados.Click += btnResultados_Click;
-            // 
-            // btnCandidatos
-            // 
-            btnCandidatos.FlatStyle = FlatStyle.Flat;
-            btnCandidatos.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnCandidatos.Location = new Point(14, 169);
-            btnCandidatos.Name = "btnCandidatos";
-            btnCandidatos.Size = new Size(200, 45);
-            btnCandidatos.TabIndex = 3;
-            btnCandidatos.Text = "Candidatos";
-            btnCandidatos.UseVisualStyleBackColor = true;
-            btnCandidatos.Click += btnCandidatos_Click;
-            // 
-            // btnConvocatorias
-            // 
-            btnConvocatorias.FlatStyle = FlatStyle.Flat;
-            btnConvocatorias.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnConvocatorias.Location = new Point(14, 108);
-            btnConvocatorias.Name = "btnConvocatorias";
-            btnConvocatorias.Size = new Size(200, 45);
-            btnConvocatorias.TabIndex = 2;
-            btnConvocatorias.Text = "Convocatorias";
-            btnConvocatorias.UseVisualStyleBackColor = true;
-            btnConvocatorias.Click += btnConvocatorias_Click;
             // 
             // lblAdmin
             // 
@@ -138,9 +86,61 @@
             lblLogo.Text = "SDVE";
             lblLogo.TextAlign = ContentAlignment.MiddleCenter;
             // 
+            // btnExportacion
+            // 
+            btnExportacion.FlatStyle = FlatStyle.Flat;
+            btnExportacion.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnExportacion.Location = new Point(327, 410);
+            btnExportacion.Name = "btnExportacion";
+            btnExportacion.Size = new Size(200, 45);
+            btnExportacion.TabIndex = 5;
+            btnExportacion.Text = "Exportación";
+            btnExportacion.UseVisualStyleBackColor = true;
+            btnExportacion.Click += btnExportacion_Click;
+            // 
+            // btnResultados
+            // 
+            btnResultados.FlatStyle = FlatStyle.Flat;
+            btnResultados.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnResultados.Location = new Point(327, 306);
+            btnResultados.Name = "btnResultados";
+            btnResultados.Size = new Size(200, 45);
+            btnResultados.TabIndex = 4;
+            btnResultados.Text = "Resultados";
+            btnResultados.UseVisualStyleBackColor = true;
+            btnResultados.Click += btnResultados_Click;
+            // 
+            // btnCandidatos
+            // 
+            btnCandidatos.FlatStyle = FlatStyle.Flat;
+            btnCandidatos.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnCandidatos.Location = new Point(327, 196);
+            btnCandidatos.Name = "btnCandidatos";
+            btnCandidatos.Size = new Size(200, 45);
+            btnCandidatos.TabIndex = 3;
+            btnCandidatos.Text = "Candidatos";
+            btnCandidatos.UseVisualStyleBackColor = true;
+            btnCandidatos.Click += btnCandidatos_Click;
+            // 
+            // btnConvocatorias
+            // 
+            btnConvocatorias.FlatStyle = FlatStyle.Flat;
+            btnConvocatorias.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnConvocatorias.Location = new Point(327, 95);
+            btnConvocatorias.Name = "btnConvocatorias";
+            btnConvocatorias.Size = new Size(200, 45);
+            btnConvocatorias.TabIndex = 2;
+            btnConvocatorias.Text = "Convocatorias";
+            btnConvocatorias.UseVisualStyleBackColor = true;
+            btnConvocatorias.Click += btnConvocatorias_Click;
+            // 
             // pnlContenido
             // 
+            pnlContenido.Controls.Add(btnExportacion);
+            pnlContenido.Controls.Add(btnResultados);
+            pnlContenido.Controls.Add(btnCandidatos);
             pnlContenido.Controls.Add(label1);
+            pnlContenido.Controls.Add(btnConvocatorias);
             pnlContenido.Dock = DockStyle.Fill;
             pnlContenido.Location = new Point(220, 0);
             pnlContenido.Name = "pnlContenido";
@@ -189,5 +189,8 @@
         private Button btnResultados;
         private Button btnCandidatos;
         private Label label1;
+        private Label label4;
+        private Label label3;
+        private Label label2;
     }
 }

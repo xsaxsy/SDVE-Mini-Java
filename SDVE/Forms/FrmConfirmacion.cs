@@ -18,10 +18,12 @@ namespace SDVE.Forms
         public FrmConfirmacion()
         {
             InitializeComponent();
+            UiTheme.Apply(this);
         }
         public FrmConfirmacion(List<Voto> votos)
         {
             InitializeComponent();
+            UiTheme.Apply(this);
             this.votos = votos;
             CargarResumen();
         }
