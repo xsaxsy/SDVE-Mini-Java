@@ -44,5 +44,13 @@ namespace SDVE.Forms
             frmResultados.ShowDialog();
 
         }
+
+        private void btnExportacion_Click(object sender, EventArgs e)
+        {
+            FrmExportacion frmExportacion = new FrmExportacion();
+            frmExportacion.Show();
+
+            
+        }
     }
 }

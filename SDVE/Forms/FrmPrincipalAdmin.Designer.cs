@@ -79,6 +79,7 @@
             btnExportacion.TabIndex = 5;
             btnExportacion.Text = "Exportación";
             btnExportacion.UseVisualStyleBackColor = true;
+            btnExportacion.Click += btnExportacion_Click;
             // 
             // btnResultados
             // 
