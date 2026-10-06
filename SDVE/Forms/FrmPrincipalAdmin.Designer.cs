@@ -1,4 +1,4 @@
-﻿namespace SDVE.Forms
+namespace SDVE.Forms
 {
     partial class FrmPrincipalAdmin
     {
@@ -189,8 +189,5 @@
         private Button btnResultados;
         private Button btnCandidatos;
         private Label label1;
-        private Label label4;
-        private Label label3;
-        private Label label2;
     }
 }

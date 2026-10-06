@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -15,22 +15,31 @@ namespace SDVE.Forms
 {
     public partial class FrmVotacion : Form
     {
-        private List<int> eleccionesSeleccionadas;
+        private List<int> eleccionesSeleccionadas = new();
         private List<Voto> votosSeleccionados = new List<Voto>();
-        private string matriculaAlumno;
+        private string matriculaAlumno = string.Empty;
+        private FrmInicio? formularioInicio;
+
         public FrmVotacion()
         {
             InitializeComponent();
             UiTheme.Apply(this);
         }
         public FrmVotacion(List<int> eleccionesSeleccionadas, string matriculaAlumno)
+            : this(eleccionesSeleccionadas, matriculaAlumno, null)
+        {
+        }
+
+        public FrmVotacion(List<int> eleccionesSeleccionadas, string matriculaAlumno, FrmInicio? formularioInicio)
         {
             InitializeComponent();
             UiTheme.Apply(this);
 
             this.eleccionesSeleccionadas = eleccionesSeleccionadas;
             this.matriculaAlumno = matriculaAlumno;
+            this.formularioInicio = formularioInicio;
 
+            DatosService.CargarDatos();
             CargarPapeleta();
         }
         private void CargarPapeleta()
@@ -53,7 +62,6 @@ namespace SDVE.Forms
                 grupo.Font = new Font("Segoe UI", 11, FontStyle.Bold);
                 grupo.Location = new Point(15, posicionY);
                 grupo.Width = 840;
-                grupo.Height = 180;
 
                 int posicionCandidatoY = 30;
 
@@ -97,10 +105,41 @@ namespace SDVE.Forms
 
                 grupo.Controls.Add(txtOtro);
 
+                Button btnQuitarSeleccion = new Button
+                {
+                    Text = "Quitar selección",
+                    Location = new Point(590, posicionCandidatoY),
+                    Size = new Size(145, 28),
+                    UseVisualStyleBackColor = true
+                };
+                btnQuitarSeleccion.Click += (sender, e) =>
+                {
+                    foreach (RadioButton radio in grupo.Controls.OfType<RadioButton>())
+                        radio.Checked = false;
+                    txtOtro.Clear();
+                };
+                grupo.Controls.Add(btnQuitarSeleccion);
+
+                grupo.Height = Math.Max(180, posicionCandidatoY + 50);
                 pnlPapeleta.Controls.Add(grupo);
 
                 posicionY += grupo.Height + 15;
             }
+        }
+
+        private void btnRegresar_Click(object sender, EventArgs e)
+        {
+            if (formularioInicio != null && !formularioInicio.IsDisposed)
+            {
+                formularioInicio.Show();
+                formularioInicio.Activate();
+            }
+            else
+            {
+                new FrmInicio(matriculaAlumno).Show();
+            }
+
+            Close();
         }
 
         private void btnContinuar_Click(object sender, EventArgs e)
@@ -111,10 +150,20 @@ namespace SDVE.Forms
             // en alguna de las convocatorias seleccionadas.
             foreach (int convocatoriaId in eleccionesSeleccionadas)
             {
-                bool yaVoto = DatosService.Votos.Any(v =>
-                    v.MatriculaAlumno == matriculaAlumno &&
-                    v.ConvocatoriaId == convocatoriaId
-                );
+                bool yaVoto;
+                try
+                {
+                    yaVoto = DatosService.YaVoto(matriculaAlumno, convocatoriaId);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(
+                        "No se pudo verificar si ya votaste.\n\n" + ex.Message,
+                        "Error al consultar votos",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                    return;
+                }
 
                 if (yaVoto)
                 {
@@ -154,7 +203,7 @@ namespace SDVE.Forms
                         if (elemento is TextBox textBox)
                         {
                             candidatoNoRegistrado = textBox;
-                            convocatoriaId = (int)textBox.Tag;
+                            convocatoriaId = textBox.Tag is int id ? id : 0;
                         }
                     }
 
@@ -213,7 +262,7 @@ namespace SDVE.Forms
                     Voto voto = new Voto
                     {
                         MatriculaAlumno = matriculaAlumno,
-                        Grupo = alumno.Grupo,
+                        Grupo = alumno.Semestre,
                         Carrera = alumno.Carrera,
                         CentroUniversitario = alumno.CentroUniversitario,
                         ConvocatoriaId = convocatoriaId,
@@ -223,7 +272,7 @@ namespace SDVE.Forms
                     if (tieneCandidatoRegistrado)
                     {
                         voto.CandidatoId =
-                            (int)candidatoSeleccionado!.Tag;
+                            candidatoSeleccionado!.Tag is int candidatoId ? candidatoId : null;
                     }
                     else
                     {

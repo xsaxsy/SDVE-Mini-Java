@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -15,7 +15,7 @@ namespace SDVE.Forms
 {
     public partial class FrmInicio : Form
     {
-        private string matriculaAlumno;
+        private string matriculaAlumno = string.Empty;
         public FrmInicio()
         {
             InitializeComponent();
@@ -26,6 +26,7 @@ namespace SDVE.Forms
             InitializeComponent();
             UiTheme.Apply(this);
             matriculaAlumno = matricula;
+            DatosService.CargarConvocatorias();
             CargarConvocatoriasActivas();
         }
         private void btnContinuar_Click(object sender, EventArgs e)
@@ -40,21 +41,21 @@ namespace SDVE.Forms
                 return;
             }
 
-            List<int> eleccionesSeleccionadas = new List<int>();
+            var eleccionesSeleccionadas = new[]
+                { chkSociedadAlumnos, chkConsejoUniversitario, chkConsejoRepresentantes }
+                .Where(opcion => opcion.Checked && opcion.Tag is int)
+                .Select(opcion => (int)opcion.Tag!)
+                .ToList();
 
-            if (chkSociedadAlumnos.Checked)
-                eleccionesSeleccionadas.Add(1);
-
-            if (chkConsejoUniversitario.Checked)
-                eleccionesSeleccionadas.Add(2);
-
-            if (chkConsejoRepresentantes.Checked)
-                eleccionesSeleccionadas.Add(3);
-
-            FrmVotacion frmVotacion = new FrmVotacion(eleccionesSeleccionadas, matriculaAlumno);
-            frmVotacion.Show();
-
-            this.Hide();
+            if (eleccionesSeleccionadas.Count == 0)
+            {
+                MessageBox.Show(
+                    "No hay convocatorias activas disponibles.",
+                    "Sin convocatorias",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+                return;
+            }
 
             foreach (int convocatoriaId in eleccionesSeleccionadas)
             {
@@ -71,31 +72,47 @@ namespace SDVE.Forms
                     return;
                 }
             }
-            
+
+            try
+            {
+                FrmVotacion frmVotacion = new FrmVotacion(eleccionesSeleccionadas, matriculaAlumno, this);
+                frmVotacion.Show();
+                this.Hide();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "No se pudo cargar la papeleta desde MySQL.\n\n" + ex.Message,
+                    "Error al abrir votación",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
         }
 
         private void CargarConvocatoriasActivas()
         {
-            Convocatoria? sociedadAlumnos =
-        DatosService.Convocatorias
-            .FirstOrDefault(c => c.Id == 1);
+            var opciones = new[]
+            {
+                (Control: chkSociedadAlumnos, Clave: "sociedad"),
+                (Control: chkConsejoUniversitario, Clave: "consejo universitario"),
+                (Control: chkConsejoRepresentantes, Clave: "representantes")
+            };
 
-            Convocatoria? consejoUniversitario =
-                DatosService.Convocatorias
-                    .FirstOrDefault(c => c.Id == 2);
+            foreach (var opcion in opciones)
+            {
+                opcion.Control.Visible = false;
+                opcion.Control.Checked = false;
+                opcion.Control.Tag = null;
 
-            Convocatoria? consejoRepresentantes =
-                DatosService.Convocatorias
-                    .FirstOrDefault(c => c.Id == 3);
+                var convocatoria = DatosService.Convocatorias.FirstOrDefault(c =>
+                    c.Activa && c.Nombre.Contains(opcion.Clave, StringComparison.CurrentCultureIgnoreCase));
 
-            chkSociedadAlumnos.Visible =
-                sociedadAlumnos != null && sociedadAlumnos.Activa;
-
-            chkConsejoUniversitario.Visible =
-                consejoUniversitario != null && consejoUniversitario.Activa;
-
-            chkConsejoRepresentantes.Visible =
-                consejoRepresentantes != null && consejoRepresentantes.Activa;
+                if (convocatoria != null)
+                {
+                    opcion.Control.Tag = convocatoria.Id;
+                    opcion.Control.Visible = true;
+                }
+            }
         }
     }
 }

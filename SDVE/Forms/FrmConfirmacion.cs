@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -14,7 +14,7 @@ namespace SDVE.Forms
 {
     public partial class FrmConfirmacion : Form
     {
-        private List<Voto> votos;
+        private List<Voto> votos = new();
         public FrmConfirmacion()
         {
             InitializeComponent();
@@ -90,11 +90,19 @@ namespace SDVE.Forms
 
         private void btnConfirmar_Click(object sender, EventArgs e)
         {
-            foreach (Voto voto in votos)
+            try
             {
-                DatosService.Votos.Add(voto);
+                DatosService.GuardarVotos(votos);
             }
-            
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "No se pudieron guardar los votos. No se registró la papeleta.\n\n" + ex.Message,
+                    "Error al registrar el voto",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+                return;
+            }
 
             MessageBox.Show("Tu voto ha sido registrado correctamente. ",
                 "Votación completa.",

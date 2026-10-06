@@ -1,4 +1,4 @@
-﻿using SDVE.Models;
+using SDVE.Models;
 using SDVE.Services;
 using System;
 using System.Collections.Generic;
@@ -18,6 +18,7 @@ namespace SDVE.Forms
         {
             InitializeComponent();
             UiTheme.Apply(this);
+            DatosService.CargarConvocatorias();
             CargarConvocatorias();
         }
 
@@ -61,23 +62,16 @@ namespace SDVE.Forms
                 return;
             }
 
-            int nuevoId =
-                DatosService.Candidatos.Count == 0
-                    ? 1
-                    : DatosService.Candidatos.Max(c => c.Id) + 1;
-
-            int convocatoriaId =
-                Convert.ToInt32(cmbConvocatoria.SelectedValue);
-
-            Candidato nuevoCandidato = new Candidato
+            int convocatoriaId = Convert.ToInt32(cmbConvocatoria.SelectedValue);
+            try
             {
-                Id = nuevoId,
-                Nombre = nombre,
-                ConvocatoriaId = convocatoriaId,
-                EsRegistrado = true
-            };
-
-            DatosService.Candidatos.Add(nuevoCandidato);
+                DatosService.AgregarCandidato(nombre, convocatoriaId);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "No se pudo agregar", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
             MessageBox.Show(
                 "El candidato se agregó correctamente.",

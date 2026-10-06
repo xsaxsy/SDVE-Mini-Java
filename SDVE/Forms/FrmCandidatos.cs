@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -17,6 +17,8 @@ namespace SDVE.Forms
         {
             InitializeComponent();
             UiTheme.Apply(this);
+            DatosService.CargarConvocatorias();
+            DatosService.CargarCandidatos();
             CargarCandidatos();
         }
 
@@ -116,22 +118,6 @@ namespace SDVE.Forms
                 return;
             }
 
-            bool tieneVotos =
-                DatosService.Votos
-                    .Any(v => v.CandidatoId == candidatoId);
-
-            if (tieneVotos)
-            {
-                MessageBox.Show(
-                    "No se puede eliminar este candidato porque ya existen votos registrados a su nombre.",
-                    "Candidato con votos",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning
-                );
-
-                return;
-            }
-
             DialogResult confirmacion = MessageBox.Show(
                 "¿Estás seguro de que deseas eliminar al candidato:\n\n" +
                 candidato.Nombre + "?",
@@ -144,7 +130,15 @@ namespace SDVE.Forms
                 return;
             }
 
-            DatosService.Candidatos.Remove(candidato);
+            try
+            {
+                DatosService.EliminarCandidato(candidatoId);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "No se pudo eliminar", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
             MessageBox.Show(
                 "El candidato se eliminó correctamente.",

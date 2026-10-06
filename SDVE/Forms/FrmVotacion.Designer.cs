@@ -1,4 +1,4 @@
-﻿namespace SDVE.Forms
+namespace SDVE.Forms
 {
     partial class FrmVotacion
     {
@@ -32,10 +32,11 @@
             lblInstruccion = new Label();
             pnlPapeleta = new Panel();
             btnContinuar = new Button();
+            btnRegresar = new Button();
             SuspendLayout();
-            // 
+            //
             // lblTitulo
-            // 
+            //
             lblTitulo.BackColor = Color.FromArgb(51, 55, 113);
             lblTitulo.Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblTitulo.ForeColor = SystemColors.Window;
@@ -45,9 +46,9 @@
             lblTitulo.TabIndex = 0;
             lblTitulo.Text = "PAPELETA DE VOTACIÓN";
             lblTitulo.TextAlign = ContentAlignment.MiddleCenter;
-            // 
+            //
             // lblInstruccion
-            // 
+            //
             lblInstruccion.AutoSize = true;
             lblInstruccion.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lblInstruccion.Location = new Point(327, 87);
@@ -55,31 +56,42 @@
             lblInstruccion.Size = new Size(339, 23);
             lblInstruccion.TabIndex = 1;
             lblInstruccion.Text = "Seleccione un candidato por cada elección:";
-            // 
+            //
             // pnlPapeleta
-            // 
+            //
             pnlPapeleta.AutoScroll = true;
             pnlPapeleta.BorderStyle = BorderStyle.FixedSingle;
             pnlPapeleta.Location = new Point(23, 131);
             pnlPapeleta.Name = "pnlPapeleta";
             pnlPapeleta.Size = new Size(930, 444);
             pnlPapeleta.TabIndex = 2;
-            // 
+            //
             // btnContinuar
-            // 
-            btnContinuar.Location = new Point(444, 602);
+            //
+            btnContinuar.Location = new Point(550, 602);
             btnContinuar.Name = "btnContinuar";
-            btnContinuar.Size = new Size(103, 29);
-            btnContinuar.TabIndex = 3;
+            btnContinuar.Size = new Size(125, 29);
+            btnContinuar.TabIndex = 4;
             btnContinuar.Text = "CONTINUAR";
             btnContinuar.UseVisualStyleBackColor = true;
             btnContinuar.Click += this.btnContinuar_Click;
-            // 
+            //
+            // btnRegresar
+            //
+            btnRegresar.Location = new Point(320, 602);
+            btnRegresar.Name = "btnRegresar";
+            btnRegresar.Size = new Size(125, 29);
+            btnRegresar.TabIndex = 3;
+            btnRegresar.Text = "REGRESAR";
+            btnRegresar.UseVisualStyleBackColor = true;
+            btnRegresar.Click += btnRegresar_Click;
+            //
             // FrmVotacion
-            // 
+            //
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(982, 653);
+            Controls.Add(btnRegresar);
             Controls.Add(btnContinuar);
             Controls.Add(pnlPapeleta);
             Controls.Add(lblInstruccion);
@@ -99,5 +111,6 @@
         private Label lblInstruccion;
         private Panel pnlPapeleta;
         private Button btnContinuar;
+        private Button btnRegresar;
     }
 }

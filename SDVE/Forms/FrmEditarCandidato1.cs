@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -26,6 +26,8 @@ namespace SDVE.Forms
             UiTheme.Apply(this);
             candidatoId = id;
 
+            DatosService.CargarConvocatorias();
+            DatosService.CargarCandidatos();
             CargarConvocatorias();
             CargarCandidato();
         }
@@ -109,9 +111,18 @@ namespace SDVE.Forms
                 return;
             }
 
-            candidato.Nombre = nombre;
-            candidato.ConvocatoriaId =
-                Convert.ToInt32(cmbConvocatoria.SelectedValue);
+            try
+            {
+                DatosService.ActualizarCandidato(
+                    candidatoId,
+                    nombre,
+                    Convert.ToInt32(cmbConvocatoria.SelectedValue));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "No se pudo actualizar", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
             MessageBox.Show(
                 "Los datos del candidato se actualizaron correctamente.",
