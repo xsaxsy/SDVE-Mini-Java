@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -24,6 +24,16 @@ namespace SDVE.Forms
 
         private void FrmExportacion_Load(object sender, EventArgs e)
         {
+            try
+            {
+                DatosService.CargarDatos();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error de conexión", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Close();
+                return;
+            }
             CargarConvocatorias();
             CargarFormatos();
             CargarNiveles();
@@ -54,9 +64,9 @@ namespace SDVE.Forms
             cmbNivel.Items.Clear();
 
             cmbNivel.Items.Add("General");
-            cmbNivel.Items.Add("Grupo");
+            cmbNivel.Items.Add("Semestre");
             cmbNivel.Items.Add("Carrera");
-            cmbNivel.Items.Add("Centro Universitario");
+
 
             cmbNivel.SelectedIndex = 0;
         }
@@ -79,10 +89,10 @@ namespace SDVE.Forms
             lblFiltro.Visible = true;
             cmbFiltro.Visible = true;
 
-            if (nivel == "Grupo")
+            if (nivel == "Semestre")
             {
                 foreach (string grupo in DatosService.Alumnos
-                    .Select(a => a.Grupo)
+                    .Select(a => a.Semestre)
                     .Distinct()
                     .OrderBy(g => g))
                 {
@@ -97,16 +107,6 @@ namespace SDVE.Forms
                     .OrderBy(c => c))
                 {
                     cmbFiltro.Items.Add(carrera);
-                }
-            }
-            else if (nivel == "Centro Universitario")
-            {
-                foreach (string centro in DatosService.Alumnos
-                    .Select(a => a.CentroUniversitario)
-                    .Distinct()
-                    .OrderBy(c => c))
-                {
-                    cmbFiltro.Items.Add(centro);
                 }
             }
 
@@ -148,23 +148,16 @@ namespace SDVE.Forms
             var alumnosFiltrados = DatosService.Alumnos.ToList();
 
             // Aplicar filtros
-            if (nivel == "Grupo" && !string.IsNullOrWhiteSpace(filtro))
+            if (nivel == "Semestre" && !string.IsNullOrWhiteSpace(filtro))
             {
                 alumnosFiltrados = alumnosFiltrados
-                    .Where(a => a.Grupo == filtro)
+                    .Where(a => a.Semestre == filtro)
                     .ToList();
             }
             else if (nivel == "Carrera" && !string.IsNullOrWhiteSpace(filtro))
             {
                 alumnosFiltrados = alumnosFiltrados
                     .Where(a => a.Carrera == filtro)
-                    .ToList();
-            }
-            else if (nivel == "Centro Universitario" &&
-                     !string.IsNullOrWhiteSpace(filtro))
-            {
-                alumnosFiltrados = alumnosFiltrados
-                    .Where(a => a.CentroUniversitario == filtro)
                     .ToList();
             }
 

@@ -1,3 +1,4 @@
+using MySqlConnector;
 using SDVE.Forms;
 using SDVE.Models;
 using SDVE.Services;
@@ -17,17 +18,16 @@ namespace SDVE
 
         private void btnIniciarSesion_Click(object sender, EventArgs e)
         {
-            string matricula = txtMatricula.Text.Trim();
+            string usuario = txtMatricula.Text.Trim();
             string password = txtPassword.Text;
 
-            if (string.IsNullOrWhiteSpace(matricula))
+            if (string.IsNullOrWhiteSpace(usuario))
             {
                 MessageBox.Show(
-                    "Debes ingresar tu matrícula.",
+                    "Debes ingresar tu matrícula o usuario.",
                     "Dato requerido",
                     MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning
-                );
+                    MessageBoxIcon.Warning);
 
                 txtMatricula.Focus();
                 return;
@@ -39,49 +39,88 @@ namespace SDVE
                     "Debes ingresar tu contraseña.",
                     "Dato requerido",
                     MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning
-                );
+                    MessageBoxIcon.Warning);
 
                 txtPassword.Focus();
                 return;
             }
 
-            //Esta parte solo es temporal para el acceso al administrador
-            if (matricula == "admin" && password == "admin123")
+            try
             {
-                FrmPrincipalAdmin frmAdmin = new FrmPrincipalAdmin();
+                Conexion conexion = new Conexion();
 
-                frmAdmin.Show();
+                using (MySqlConnection conn = conexion.ObtenerConexion())
+                {
+                    conn.Open();
 
-                this.Hide();
+                    // Verificar administrador
+                    string sqlAdmin =
+                        @"SELECT COUNT(*)
+                  FROM Administradores
+                  WHERE Usuario = @usuario
+                  AND Contrasena = @contrasena";
 
-                return;
+                    MySqlCommand cmdAdmin =
+                        new MySqlCommand(sqlAdmin, conn);
+
+                    cmdAdmin.Parameters.AddWithValue("@usuario", usuario);
+                    cmdAdmin.Parameters.AddWithValue("@contrasena", password);
+
+                    int existeAdmin =
+                        Convert.ToInt32(cmdAdmin.ExecuteScalar());
+
+                    if (existeAdmin > 0)
+                    {
+                        FrmPrincipalAdmin frmAdmin =
+                            new FrmPrincipalAdmin();
+
+                        frmAdmin.Show();
+                        this.Hide();
+                        return;
+                    }
+
+                    // Verificar alumno
+                    string sqlAlumno =
+                        @"SELECT COUNT(*)
+                  FROM Alumnos
+                  WHERE Matricula = @matricula
+                  AND Contrasena = @contrasena";
+
+                    MySqlCommand cmdAlumno =
+                        new MySqlCommand(sqlAlumno, conn);
+
+                    cmdAlumno.Parameters.AddWithValue("@matricula", usuario);
+                    cmdAlumno.Parameters.AddWithValue("@contrasena", password);
+
+                    int existeAlumno =
+                        Convert.ToInt32(cmdAlumno.ExecuteScalar());
+
+                    if (existeAlumno > 0)
+                    {
+                        FrmInicio frmInicio =
+                            new FrmInicio(usuario);
+
+                        frmInicio.Show();
+                        this.Hide();
+                    }
+                    else
+                    {
+                        MessageBox.Show(
+                            "Usuario o contraseña incorrectos.",
+                            "Acceso denegado",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Error);
+                    }
+                }
             }
-
-            // Buscar al alumno por matrícula
-            Alumno? alumno = DatosService.Alumnos
-                .FirstOrDefault(a => a.Matricula == matricula);
-
-            if (alumno == null)
+            catch (Exception ex)
             {
                 MessageBox.Show(
-                    "La matrícula ingresada no se encuentra registrada.",
-                    "Matrícula no encontrada",
+                    ex.Message,
+                    "Error",
                     MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning
-                );
-
-                txtMatricula.Focus();
-                return;
+                    MessageBoxIcon.Error);
             }
-
-            //Acceso de alumno
-            FrmInicio frmInicio = new FrmInicio(alumno.Matricula);
-
-            frmInicio.Show();
-
-            this.Hide();
-
         }
         private void FrmLogin_FormClosed(object sender, FormClosedEventArgs e)
         {

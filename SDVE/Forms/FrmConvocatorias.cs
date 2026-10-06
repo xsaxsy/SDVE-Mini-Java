@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -18,6 +18,7 @@ namespace SDVE.Forms
         {
             InitializeComponent();
             UiTheme.Apply(this);
+            DatosService.CargarConvocatorias();
             CargarConvocatorias();
         }
 
@@ -70,9 +71,15 @@ namespace SDVE.Forms
                 return;
             }
 
-            convocatoria.Activa = !convocatoria.Activa;
-
-            CargarConvocatorias();
+            try
+            {
+                DatosService.CambiarEstadoConvocatoria(convocatoriaId, !convocatoria.Activa);
+                CargarConvocatorias();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "No se pudo cambiar el estado", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void btnRegresar_Click(object sender, EventArgs e)
